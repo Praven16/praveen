@@ -3,18 +3,18 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Code2 } from "lucide-react";
 
+const navItems = [
+  { id: "home", label: "Home" },
+  { id: "about", label: "About" },
+  { id: "projects", label: "Projects" },
+  { id: "experience", label: "Experience" },
+  { id: "contact", label: "Contact" },
+];
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-
-  const navItems = [
-    { id: "home", label: "Home" },
-    { id: "about", label: "About" },
-    { id: "projects", label: "Projects" },
-    { id: "experience", label: "Experience" },
-    { id: "contact", label: "Contact" },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,7 +49,7 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-slate-950/80 backdrop-blur-md border-b border-white/5 py-4"
+          ? "bg-white/80 backdrop-blur-md border-b border-slate-200/50 py-4"
           : "bg-transparent py-6"
       }`}
     >
@@ -63,7 +63,7 @@ export default function Navbar() {
             <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400 border border-indigo-500/20">
               <Code2 className="w-6 h-6 animate-pulse" />
             </div>
-            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
+            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-600 bg-clip-text text-transparent">
               Praveen.dev
             </span>
           </div>
@@ -74,10 +74,10 @@ export default function Navbar() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className={`text-sm font-medium transition-colors cursor-pointer hover:text-white ${
+                className={`text-sm font-medium transition-colors cursor-pointer hover:text-slate-900 ${
                   activeSection === item.id
-                    ? "text-indigo-400 font-semibold"
-                    : "text-slate-400"
+                    ? "text-indigo-600 font-semibold"
+                    : "text-slate-600"
                 }`}
               >
                 {item.label}
@@ -95,7 +95,7 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              className="p-2 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -105,7 +105,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-slate-950/95 backdrop-blur-lg border-b border-white/5 transition-all duration-300 ${
+        className={`md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-slate-200/50 transition-all duration-300 ${
           isOpen
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 -translate-y-4 pointer-events-none"
@@ -118,8 +118,8 @@ export default function Navbar() {
               onClick={() => scrollTo(item.id)}
               className={`block w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-colors cursor-pointer ${
                 activeSection === item.id
-                  ? "bg-indigo-500/10 text-indigo-400"
-                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+                  ? "bg-indigo-50 text-indigo-600"
+                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
               }`}
             >
               {item.label}

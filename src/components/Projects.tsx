@@ -41,10 +41,10 @@ export default function Projects() {
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
             My Portfolio
           </h2>
-          <p className="mt-2 text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          <p className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             Featured Projects
           </p>
           <div className="mt-4 h-1 w-12 bg-indigo-500 rounded-full mx-auto" />
@@ -77,7 +77,7 @@ export default function Projects() {
                     {project.tags.map((tag, tIdx) => (
                       <span
                         key={tIdx}
-                        className="text-[11px] font-medium tracking-wide uppercase px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/10"
+                        className="text-[11px] font-medium tracking-wide uppercase px-2 py-0.5 rounded bg-indigo-50 text-indigo-600 border border-indigo-100"
                       >
                         {tag}
                       </span>
@@ -85,23 +85,23 @@ export default function Projects() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">
+                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
                     {project.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-sm text-slate-400 leading-relaxed line-clamp-3">
+                  <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
                     {project.description}
                   </p>
                 </div>
 
                 {/* Footer Links */}
-                <div className="flex items-center gap-4 pt-6 border-t border-white/5 mt-6">
+                <div className="flex items-center gap-4 pt-6 border-t border-slate-200/60 mt-6">
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors"
+                    className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 transition-colors"
                   >
                     <Github className="w-4 h-4" />
                     Code
@@ -110,7 +110,7 @@ export default function Projects() {
                     href={project.demo}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-indigo-400 transition-colors ml-auto"
+                    className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-indigo-600 transition-colors ml-auto"
                   >
                     <ExternalLink className="w-4 h-4" />
                     Live Demo

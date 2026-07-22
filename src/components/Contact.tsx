@@ -36,10 +36,10 @@ export default function Contact() {
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
             Get In Touch
           </h2>
-          <p className="mt-2 text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          <p className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             Contact Me
           </p>
           <div className="mt-4 h-1 w-12 bg-indigo-500 rounded-full mx-auto" />
@@ -49,22 +49,22 @@ export default function Contact() {
           
           {/* Left Column: Info cards */}
           <div className="lg:col-span-5 space-y-6">
-            <h3 className="text-2xl font-bold text-slate-100">
-              Let's discuss your next project
+            <h3 className="text-2xl font-bold text-slate-800">
+              {"Let's discuss your next project"}
             </h3>
-            <p className="text-slate-400 leading-relaxed">
-              Have an idea, project, or full-time position you'd like to collaborate on? Drop me a message and I'll get back to you within 24 hours.
+            <p className="text-slate-600 leading-relaxed">
+              {"Have an idea, project, or full-time position you'd like to collaborate on? Drop me a message and I'll get back to you within 24 hours."}
             </p>
 
             <div className="space-y-4 pt-4">
               {/* Contact Item */}
               <div className="flex items-center gap-4 p-4 glass-panel rounded-xl">
-                <div className="p-3 bg-indigo-500/10 rounded-xl text-indigo-400">
+                <div className="p-3 bg-indigo-50 rounded-xl text-indigo-600">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400">Email Me</div>
-                  <a href="mailto:praveen@example.com" className="text-sm font-semibold text-white hover:text-indigo-400 transition-colors">
+                  <div className="text-xs text-slate-500">Email Me</div>
+                  <a href="mailto:praveen@example.com" className="text-sm font-semibold text-slate-900 hover:text-indigo-600 transition-colors">
                     praveen@example.com
                   </a>
                 </div>
@@ -72,12 +72,12 @@ export default function Contact() {
 
               {/* Contact Item */}
               <div className="flex items-center gap-4 p-4 glass-panel rounded-xl">
-                <div className="p-3 bg-indigo-500/10 rounded-xl text-indigo-400">
+                <div className="p-3 bg-indigo-50 rounded-xl text-indigo-600">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400">Call Me</div>
-                  <a href="tel:+123456789" className="text-sm font-semibold text-white hover:text-indigo-400 transition-colors">
+                  <div className="text-xs text-slate-500">Call Me</div>
+                  <a href="tel:+123456789" className="text-sm font-semibold text-slate-900 hover:text-indigo-600 transition-colors">
                     +1 (234) 567-890
                   </a>
                 </div>
@@ -85,12 +85,12 @@ export default function Contact() {
 
               {/* Contact Item */}
               <div className="flex items-center gap-4 p-4 glass-panel rounded-xl">
-                <div className="p-3 bg-indigo-500/10 rounded-xl text-indigo-400">
+                <div className="p-3 bg-indigo-50 rounded-xl text-indigo-600">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400">Location</div>
-                  <div className="text-sm font-semibold text-white">
+                  <div className="text-xs text-slate-500">Location</div>
+                  <div className="text-sm font-semibold text-slate-900">
                     San Francisco, CA, USA
                   </div>
                 </div>
@@ -100,12 +100,12 @@ export default function Contact() {
 
           {/* Right Column: Contact Form */}
           <div className="lg:col-span-7">
-            <form onSubmit={handleSubmit} className="glass-panel p-8 rounded-2xl border border-white/5 space-y-6">
+            <form onSubmit={handleSubmit} className="glass-panel p-8 rounded-2xl border border-slate-200/60 space-y-6">
               
               {/* Row: Name and Email */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-slate-600">
                     Your Name
                   </label>
                   <input
@@ -115,12 +115,12 @@ export default function Contact() {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-950/60 border border-white/10 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/40 transition-all text-sm"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all text-sm"
                     placeholder="John Doe"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-600">
                     Email Address
                   </label>
                   <input
@@ -130,7 +130,7 @@ export default function Contact() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-950/60 border border-white/10 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/40 transition-all text-sm"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all text-sm"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -138,7 +138,7 @@ export default function Contact() {
 
               {/* Subject */}
               <div className="space-y-2">
-                <label htmlFor="subject" className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+                <label htmlFor="subject" className="text-xs font-semibold uppercase tracking-wider text-slate-600">
                   Subject
                 </label>
                 <input
@@ -148,14 +148,14 @@ export default function Contact() {
                   required
                   value={formData.subject}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-slate-950/60 border border-white/10 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/40 transition-all text-sm"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all text-sm"
                   placeholder="Project inquiry"
                 />
               </div>
 
               {/* Message */}
               <div className="space-y-2">
-                <label htmlFor="message" className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+                <label htmlFor="message" className="text-xs font-semibold uppercase tracking-wider text-slate-600">
                   Message
                 </label>
                 <textarea
@@ -165,7 +165,7 @@ export default function Contact() {
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-slate-950/60 border border-white/10 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/40 transition-all text-sm resize-none"
+                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all text-sm resize-none"
                   placeholder="Hey Praveen, let's work on..."
                 />
               </div>

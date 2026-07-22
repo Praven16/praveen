@@ -25,15 +25,15 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="py-24 relative overflow-hidden bg-slate-950/20">
+    <section id="about" className="py-24 relative overflow-hidden bg-slate-100/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
             About Me
           </h2>
-          <p className="mt-2 text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          <p className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             Who is Praveen?
           </p>
           <div className="mt-4 h-1 w-12 bg-indigo-500 rounded-full mx-auto" />
@@ -44,15 +44,15 @@ export default function About() {
           
           {/* Left Column: Bio & Stats */}
           <div className="lg:col-span-6 space-y-8">
-            <h3 className="text-2xl font-bold text-slate-100">
+            <h3 className="text-2xl font-bold text-slate-800">
               Passionate Developer Building Modern Web Apps
             </h3>
             
-            <p className="text-slate-400 leading-relaxed">
+            <p className="text-slate-600 leading-relaxed">
               I am a dedicated full-stack web developer who loves building performant, pixel-perfect user interfaces and solid backend APIs. With a strong eye for design and meticulous attention to performance, I bridge the gap between creative visual designs and high-fidelity code.
             </p>
             
-            <p className="text-slate-400 leading-relaxed">
+            <p className="text-slate-600 leading-relaxed">
               My philosophy is centered around creating clean, scalable code architectures and ensuring an optimized user experience across all screen sizes.
             </p>
 
@@ -60,11 +60,11 @@ export default function About() {
             <div className="grid grid-cols-3 gap-4 pt-4">
               {stats.map((stat, i) => (
                 <div key={i} className="glass-panel p-4 rounded-xl text-center flex flex-col items-center">
-                  <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400 mb-2">
+                  <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600 mb-2">
                     <stat.icon className="w-5 h-5" />
                   </div>
-                  <div className="text-xl font-bold text-white">{stat.value}</div>
-                  <div className="text-xs text-slate-400 mt-1">{stat.label}</div>
+                  <div className="text-xl font-bold text-slate-900">{stat.value}</div>
+                  <div className="text-xs text-slate-500 mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -73,21 +73,21 @@ export default function About() {
           {/* Right Column: Skills */}
           <div className="lg:col-span-6 space-y-6">
             <div className="flex items-center gap-3 mb-6">
-              <Cpu className="text-indigo-400 w-6 h-6" />
-              <h3 className="text-2xl font-bold text-slate-100">My Toolbox</h3>
+              <Cpu className="text-indigo-600 w-6 h-6" />
+              <h3 className="text-2xl font-bold text-slate-800">My Toolbox</h3>
             </div>
 
             <div className="space-y-6">
               {skillCategories.map((category, idx) => (
-                <div key={idx} className="glass-panel p-6 rounded-xl border border-white/5">
-                  <h4 className="text-sm font-semibold text-indigo-300 uppercase tracking-wider mb-4">
+                <div key={idx} className="glass-panel p-6 rounded-xl border border-slate-200/60">
+                  <h4 className="text-sm font-semibold text-indigo-600 uppercase tracking-wider mb-4">
                     {category.title}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {category.skills.map((skill, sIdx) => (
                       <span
                         key={sIdx}
-                        className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-indigo-500/10 hover:text-indigo-300 text-slate-300 border border-white/5 transition-colors text-sm cursor-default"
+                        className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 border border-slate-200 transition-colors text-sm cursor-default"
                       >
                         {skill}
                       </span>

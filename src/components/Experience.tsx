@@ -35,27 +35,27 @@ export default function Experience() {
   ];
 
   return (
-    <section id="experience" className="py-24 relative bg-slate-950/20">
+    <section id="experience" className="py-24 relative bg-slate-100/50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
             My Journey
           </h2>
-          <p className="mt-2 text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          <p className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             Experience & Education
           </p>
           <div className="mt-4 h-1 w-12 bg-indigo-500 rounded-full mx-auto" />
         </div>
 
         {/* Timeline Layout */}
-        <div className="relative border-l-2 border-slate-800 ml-4 md:ml-32 space-y-12">
+        <div className="relative border-l-2 border-slate-200 ml-4 md:ml-32 space-y-12">
           {experiences.map((exp, index) => (
             <div key={index} className="relative pl-8 md:pl-12 group">
               
               {/* Timeline dot icon indicator */}
-              <div className="absolute -left-[17px] top-1.5 p-1.5 rounded-full bg-slate-950 border-2 border-indigo-500 text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shadow-md shadow-indigo-500/25">
+              <div className="absolute -left-[17px] top-1.5 p-1.5 rounded-full bg-white border-2 border-indigo-600 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shadow-md shadow-indigo-500/10">
                 {exp.type === "work" ? (
                   <Briefcase className="w-4 h-4" />
                 ) : (
@@ -64,24 +64,24 @@ export default function Experience() {
               </div>
 
               {/* Date tag container on desktop left-hand side */}
-              <div className="hidden md:block absolute right-full top-2 mr-10 w-24 text-right text-sm font-semibold text-indigo-400">
+              <div className="hidden md:block absolute right-full top-2 mr-10 w-24 text-right text-sm font-semibold text-indigo-600">
                 {exp.period}
               </div>
 
               {/* Card content */}
-              <div className="glass-panel p-6 rounded-2xl border border-white/5 hover:border-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300">
+              <div className="glass-panel p-6 rounded-2xl border border-slate-200/60 hover:border-indigo-200 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                   <div>
-                    <h3 className="text-lg font-bold text-white">{exp.role}</h3>
-                    <p className="text-sm text-indigo-300 font-medium">{exp.company}</p>
+                    <h3 className="text-lg font-bold text-slate-900">{exp.role}</h3>
+                    <p className="text-sm text-indigo-600 font-semibold">{exp.company}</p>
                   </div>
                   {/* Mobile period display */}
-                  <span className="md:hidden inline-flex items-center gap-1.5 text-xs text-indigo-400 font-medium bg-indigo-500/10 px-2.5 py-1 rounded-full">
+                  <span className="md:hidden inline-flex items-center gap-1.5 text-xs text-indigo-600 font-medium bg-indigo-50 px-2.5 py-1 rounded-full">
                     <Calendar className="w-3.5 h-3.5" />
                     {exp.period}
                   </span>
                 </div>
-                <p className="text-slate-400 text-sm leading-relaxed">
+                <p className="text-slate-600 text-sm leading-relaxed">
                   {exp.description}
                 </p>
               </div>
