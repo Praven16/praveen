@@ -1,36 +1,34 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import Work from "@/components/Work";
 import About from "@/components/About";
-import Projects from "@/components/Projects";
-import Experience from "@/components/Experience";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Navigation bar */}
+      {/* Premium sticky navigation header */}
       <Navbar />
 
-      {/* Main page content sections */}
+      {/* Main interactive landing page layout */}
       <main className="flex-grow">
-        {/* Hero Landing */}
+        
+        {/* Section 1: Hero introduction, floating visuals, stats, and core services */}
         <Hero />
 
-        {/* Detailed Bio & Skills */}
+        {/* Section 2: Filterable Selected Works & High fidelity case studies */}
+        <Work />
+
+        {/* Section 3: Professional Bio, skill grids, experiences, education, and credentials */}
         <About />
 
-        {/* Portfolio Showcase Grid */}
-        <Projects />
-
-        {/* Career & Education Journey */}
-        <Experience />
-
-        {/* Connect Form Section */}
+        {/* Section 4: Contact methods and connection intake form */}
         <Contact />
+
       </main>
 
-      {/* Page Footer */}
+      {/* Footer layout containing navigation shortcuts and floating controls */}
       <Footer />
     </div>
   );
