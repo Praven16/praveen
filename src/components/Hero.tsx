@@ -1,7 +1,12 @@
 "use client";
 
-import { ArrowRight, Download, Mail, Layers, Smartphone, PenTool, Box, Award, Users, Briefcase, ChevronRight, Check } from "lucide-react";
+import { ArrowRight, Download, Mail, Smartphone, PenTool, Box, ChevronRight, ChevronDown, Check } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
+import dynamic from "next/dynamic";
+
+const ThreeCanvas = dynamic(() => import("./ThreeCanvas"), {
+  ssr: false,
+});
 
 export default function Hero() {
   const scrollTo = (id: string) => {
@@ -46,13 +51,20 @@ export default function Hero() {
 
   return (
     <section id="home" className="w-full relative pt-32 pb-24 overflow-hidden">
+      {/* Full Screen 3D Background */}
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+        <ThreeCanvas modelPath="/model.glb" isBackground={true} />
+        {/* Readability masking gradients (adjusted light/dark mode shades) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-50/95 via-slate-50/70 to-transparent dark:from-slate-950/95 dark:via-slate-950/65 dark:to-transparent" />
+      </div>
+
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full relative z-10">
         
         {/* HERO SECTION CONTAINER */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center mb-24">
           
           {/* LEFT COLUMN: Texts and CTAs */}
-          <div className="lg:col-span-7 flex flex-col items-start space-y-8 text-left">
+          <div className="lg:col-span-7 flex flex-col items-start space-y-8 text-left relative z-10 pointer-events-auto">
             {/* Availability Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/5 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-semibold tracking-wide">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -94,7 +106,7 @@ export default function Hero() {
                 onClick={() => scrollTo("contact")}
                 className="group flex items-center justify-center gap-2 px-6 py-3.5 bg-transparent text-blue-600 dark:text-blue-400 font-semibold rounded-full hover:bg-blue-500/10 transition-all duration-300 cursor-pointer text-sm w-full sm:w-auto"
               >
-                Let's Talk
+                Let&apos;s Talk
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>
@@ -129,55 +141,12 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Premium interactive mockup graphic */}
-          <div className="lg:col-span-5 relative w-full flex justify-center lg:justify-end">
+          {/* RIGHT COLUMN: Floating accent elements over the 3D background */}
+          <div className="lg:col-span-5 relative w-full flex justify-center lg:justify-end select-none pointer-events-none">
             <div className="relative w-full max-w-[400px] aspect-square flex items-center justify-center">
               
-              {/* Graphic background radial rings */}
-              <div className="absolute inset-0 border border-dashed border-slate-200 dark:border-slate-800 rounded-full scale-100 animate-pulse-slow" />
-              <div className="absolute inset-0 border border-dashed border-slate-200 dark:border-slate-800 rounded-full scale-75 opacity-70" />
-              
-              {/* Central Premium Dashboard mockup */}
-              <div className="w-[85%] aspect-[1.1] glass-panel p-4 z-10 shadow-2xl relative border border-slate-200/50 dark:border-slate-800/50 overflow-hidden flex flex-col justify-between">
-                {/* Header */}
-                <div className="flex items-center justify-between border-b border-slate-200/50 dark:border-slate-800/50 pb-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/80" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-400/80" />
-                  </div>
-                  <span className="text-[9px] text-slate-400 font-mono">praveen_design_sys</span>
-                  <div className="w-8" />
-                </div>
-                
-                {/* Simulated Wireframe grid */}
-                <div className="grid grid-cols-3 gap-2 my-3 flex-grow">
-                  <div className="col-span-2 rounded bg-slate-100 dark:bg-slate-900 border border-slate-200/30 dark:border-slate-800/30 p-2 flex flex-col justify-between">
-                    <div className="w-1/2 h-1 bg-slate-300 dark:bg-slate-700 rounded mb-1" />
-                    <div className="w-full h-3 bg-slate-200/60 dark:bg-slate-800/60 rounded" />
-                    <div className="flex justify-between items-center mt-2">
-                      <div className="w-1/3 h-1 bg-slate-300 dark:bg-slate-700 rounded" />
-                      <div className="w-1/4 h-2 bg-blue-500/20 rounded" />
-                    </div>
-                  </div>
-                  <div className="col-span-1 rounded bg-slate-100 dark:bg-slate-900 border border-slate-200/30 dark:border-slate-800/30 p-2 flex flex-col justify-between">
-                    <div className="w-6 h-6 rounded-full bg-blue-500/10 dark:bg-blue-500/5 border border-blue-500/30 self-center flex items-center justify-center">
-                      <span className="w-2 h-2 rounded-full bg-blue-500" />
-                    </div>
-                    <div className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded" />
-                    <div className="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded" />
-                  </div>
-                </div>
-
-                {/* Status Bar */}
-                <div className="flex items-center justify-between pt-2 border-t border-slate-200/50 dark:border-slate-800/50 text-[8px] text-slate-400">
-                  <span>Responsive Grid</span>
-                  <span className="text-blue-500 font-semibold">12-Col</span>
-                </div>
-              </div>
-
               {/* Floating Element 1: Color Swatch Palette Card */}
-              <div className="absolute top-[-20px] left-[-10px] glass-panel p-3 shadow-xl z-20 w-36 animate-float">
+              <div className="absolute top-[-20px] left-[-10px] glass-panel p-3 shadow-xl z-20 w-36 animate-float pointer-events-auto">
                 <div className="text-[10px] font-semibold text-slate-500 mb-1.5">Color Tokens</div>
                 <div className="flex gap-1.5">
                   <div className="w-5 h-5 rounded-full bg-blue-600 border border-white dark:border-slate-800" title="Primary #2563EB" />
@@ -188,7 +157,7 @@ export default function Hero() {
               </div>
 
               {/* Floating Element 2: Figma Style Collaborative Cursor */}
-              <div className="absolute bottom-[30px] right-[-20px] bg-blue-600 text-white font-mono text-[10px] py-1.5 px-2.5 rounded-full rounded-tl-none shadow-lg z-30 flex items-center gap-1.5 animate-float-delayed">
+              <div className="absolute bottom-[30px] right-[-20px] bg-blue-600 text-white font-mono text-[10px] py-1.5 px-2.5 rounded-full rounded-tl-none shadow-lg z-30 flex items-center gap-1.5 animate-float-delayed pointer-events-auto">
                 <svg className="w-3 h-3 fill-current rotate-90" viewBox="0 0 24 24">
                   <path d="M21 3L3 10.53v.98l6.84 2.81 2.81 6.84h.98L21 3z" />
                 </svg>
@@ -196,7 +165,7 @@ export default function Hero() {
               </div>
 
               {/* Floating Element 3: Code Editor Block */}
-              <div className="absolute bottom-[-15px] left-[20px] glass-panel px-3 py-2 shadow-xl z-20 font-mono text-[9px] text-slate-600 dark:text-slate-400 w-44 animate-float-slow">
+              <div className="absolute bottom-[-15px] left-[20px] glass-panel px-3 py-2 shadow-xl z-20 font-mono text-[9px] text-slate-600 dark:text-slate-400 w-44 animate-float-slow pointer-events-auto">
                 <div className="flex items-center justify-between mb-1.5 text-slate-400">
                   <span>Next.js CSS</span>
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -208,6 +177,21 @@ export default function Hero() {
 
             </div>
           </div>
+        </div>
+
+        {/* Bouncing Scroll Down Indicator */}
+        <div className="flex justify-center my-12 relative z-20 pointer-events-auto">
+          <button
+            onClick={() => scrollTo("work")}
+            className="group flex flex-col items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 dark:text-slate-500 dark:hover:text-blue-400 transition-colors cursor-pointer"
+            aria-label="Scroll Down"
+          >
+            <span>Scroll Down</span>
+            <div className="w-6 h-10 border-2 border-slate-300 dark:border-slate-700 rounded-full flex justify-center p-1.5 transition-colors group-hover:border-blue-500">
+              <div className="w-1.5 h-2 rounded-full bg-blue-600 dark:bg-blue-400 animate-bounce" />
+            </div>
+            <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-blue-500 group-hover:translate-y-0.5 transition-transform" />
+          </button>
         </div>
 
         {/* STATS AREA */}
