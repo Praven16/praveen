@@ -160,17 +160,24 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
       }
     );
 
-    // 7. Interactive Parallax Mouse Move Handler (for Background mode)
+    // 7. Interactive Parallax Mouse Move & Scroll Handler (for Background mode)
     let mouseX = 0;
     let mouseY = 0;
+    let currentScrollY = 0;
 
     const handleMouseMove = (event: MouseEvent) => {
       mouseX = (event.clientX / window.innerWidth) * 2 - 1;
       mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
     };
 
+    const handleScroll = () => {
+      currentScrollY = window.scrollY;
+    };
+
     if (isBackground) {
-      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mousemove", handleMouseMove, { passive: true });
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      currentScrollY = window.scrollY; // Initialize in case user reloads scrolled down
     }
 
     // 8. Animation Loop
@@ -181,12 +188,69 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
       
       if (model) {
         if (isBackground) {
-          // Mouse hover parallax only (no automatic spinning)
-          const targetRotationY = mouseX * 0.3;
-          const targetRotationX = mouseY * 0.15;
+          // Calculate scroll progress (0.0 to 1.0)
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollFraction = maxScroll > 0 ? Math.min(Math.max(currentScrollY / maxScroll, 0), 1) : 0;
           
-          model.rotation.y += (targetRotationY - model.rotation.y) * 0.05;
-          model.rotation.x += (targetRotationX - model.rotation.x) * 0.05;
+          let targetX = 1.1;
+          let targetY = -0.4;
+          let targetZ = -0.3;
+          const targetRotY = scrollFraction * Math.PI * 4; // 2 complete spins over the page height
+          const targetRotX = mouseY * 0.15;
+
+          if (window.innerWidth >= 1024) {
+            // Desktop scroll sections interpolation:
+            // Section 1: Hero (scrollFraction 0 to 0.25)
+            //   At 0: x = 1.1, y = -0.4, z = -0.3
+            //   Moves to: x = -1.0, y = -0.4, z = -0.3 (at 0.25)
+            // Section 2: Work (scrollFraction 0.25 to 0.5)
+            //   Moves to: x = 0.0, y = -0.4, z = -1.0 (deeper background) (at 0.5)
+            // Section 3: About (scrollFraction 0.5 to 0.75)
+            //   Moves to: x = 1.1, y = -0.4, z = -0.3 (at 0.75)
+            // Section 4: Contact (scrollFraction 0.75 to 1.0)
+            //   Stays at: x = 1.1, y = -0.4, z = -0.3 (at 1.0)
+            
+            if (scrollFraction < 0.25) {
+              const t = scrollFraction / 0.25;
+              targetX = 1.1 - t * 2.1; // moves 1.1 to -1.0
+              targetY = -0.4;
+              targetZ = -0.3;
+            } else if (scrollFraction < 0.5) {
+              const t = (scrollFraction - 0.25) / 0.25;
+              targetX = -1.0 + t * 1.0; // moves -1.0 to 0.0
+              targetY = -0.4;
+              targetZ = -0.3 - t * 0.7; // moves deeper (-0.3 to -1.0)
+            } else if (scrollFraction < 0.75) {
+              const t = (scrollFraction - 0.5) / 0.25;
+              targetX = 0.0 + t * 1.1; // moves 0.0 to 1.1
+              targetY = -0.4;
+              targetZ = -1.0 + t * 0.7; // moves shallower (-1.0 to -0.3)
+            } else {
+              targetX = 1.1;
+              targetY = -0.4;
+              targetZ = -0.3;
+            }
+          } else {
+            // Mobile viewport scroll settings:
+            // Keep it centered on X (x = 0), and scale/depth changes slightly on scroll
+            targetX = 0;
+            targetY = -0.6;
+            targetZ = -scrollFraction * 0.8; // Recedes slightly deeper as they scroll down
+          }
+
+          // Smooth lerp interpolation for coordinates (damping)
+          model.position.x += (targetX - model.position.x) * 0.05;
+          model.position.y += (targetY - model.position.y) * 0.05;
+          model.position.z += (targetZ - model.position.z) * 0.05;
+          
+          // Smooth rotation (spinning + mouse parallax coordinates)
+          model.rotation.y += (targetRotY + mouseX * 0.22 - model.rotation.y) * 0.05;
+          model.rotation.x += (targetRotX - model.rotation.x) * 0.05;
+
+          // Shadow plane matches model coordinates
+          shadowPlane.position.x = model.position.x;
+          shadowPlane.position.y = model.position.y;
+          shadowPlane.position.z = model.position.z;
         } else {
           // Model remains static in standard mode unless manually rotated via OrbitControls
         }
@@ -217,6 +281,7 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
       window.removeEventListener("resize", handleResize);
       if (isBackground) {
         window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("scroll", handleScroll);
       }
       renderer.dispose();
       controls.dispose();

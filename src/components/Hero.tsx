@@ -2,11 +2,6 @@
 
 import { ArrowRight, Download, Mail, Smartphone, PenTool, Box, ChevronRight, ChevronDown, Check } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
-import dynamic from "next/dynamic";
-
-const ThreeCanvas = dynamic(() => import("./ThreeCanvas"), {
-  ssr: false,
-});
 
 export default function Hero() {
   const scrollTo = (id: string) => {
@@ -51,12 +46,6 @@ export default function Hero() {
 
   return (
     <section id="home" className="w-full relative pt-32 pb-24 overflow-hidden">
-      {/* Full Screen 3D Background */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
-        <ThreeCanvas modelPath="/model.glb" isBackground={true} />
-        {/* Readability masking gradients (adjusted light/dark mode shades) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-50/95 via-slate-50/70 to-transparent dark:from-slate-950/95 dark:via-slate-950/65 dark:to-transparent" />
-      </div>
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full relative z-10">
         
