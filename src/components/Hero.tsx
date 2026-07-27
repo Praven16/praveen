@@ -2,6 +2,7 @@
 
 import { ArrowRight, Download, Mail, Smartphone, PenTool, Box, ChevronRight, ChevronDown, Check } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
+import Background3D from "@/components/Background3D";
 
 export default function Hero() {
   const scrollTo = (id: string) => {
@@ -46,6 +47,8 @@ export default function Hero() {
 
   return (
     <section id="home" className="w-full relative pt-32 pb-24 overflow-hidden">
+      {/* 3D Canvas Background for Landing Page only */}
+      <Background3D />
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full relative z-10">
         

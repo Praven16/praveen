@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 
 interface ThreeCanvasProps {
   modelPath?: string;
@@ -28,17 +29,17 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
       0.1,
       100
     );
-    camera.position.set(0, 1.5, 4);
+    camera.position.set(0, 1.5, 8.0);
 
     // 3. Renderer Setup with premium colors & shadows
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
-    
+
     // Clear container and append canvas
     containerRef.current.innerHTML = "";
     containerRef.current.appendChild(renderer.domElement);
@@ -53,8 +54,9 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
       controls.dampingFactor = 0.05;
       controls.maxPolarAngle = Math.PI / 2 + 0.1; // Limit under-table viewing
       controls.minDistance = 1.5;
-      controls.maxDistance = 8;
+      controls.maxDistance = 10;
       controls.enablePan = false; // Keep it centered
+      controls.autoRotate = false;
     }
 
     // 5. Studio Lighting
@@ -85,6 +87,7 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
 
     // 6. Load Model
     const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
     let model: THREE.Group | null = null;
 
     // Define positioning layout function
@@ -113,20 +116,44 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
       modelPath,
       (gltf) => {
         model = gltf.scene;
-        
-        // Traverse to enable shadows for all meshes
+
+        // Traverse to enable shadows and optimize textures for maximum clarity
+        const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
         model.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
             const mesh = child as THREE.Mesh;
             mesh.castShadow = true;
             mesh.receiveShadow = true;
-            
+
             // Adjust materials if necessary for web
             if (mesh.material) {
-              const mat = mesh.material as THREE.MeshStandardMaterial;
-              if (mat.roughness !== undefined) {
-                mat.roughness = Math.max(mat.roughness, 0.1);
-              }
+              const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+              materials.forEach((material) => {
+                const mat = material as THREE.MeshStandardMaterial;
+                if (mat.roughness !== undefined) {
+                  mat.roughness = Math.max(mat.roughness, 0.1);
+                }
+
+                // Configure textures for maximum clarity & anisotropic filtering
+                const textureKeys: (keyof THREE.MeshStandardMaterial)[] = [
+                  'map',
+                  'emissiveMap',
+                  'normalMap',
+                  'roughnessMap',
+                  'metalnessMap'
+                ];
+
+                textureKeys.forEach((key) => {
+                  const texture = mat[key] as THREE.Texture | null;
+                  if (texture && texture.isTexture) {
+                    texture.anisotropy = maxAnisotropy;
+                    texture.minFilter = THREE.LinearMipmapLinearFilter;
+                    texture.magFilter = THREE.LinearFilter;
+                    texture.generateMipmaps = true;
+                    texture.needsUpdate = true;
+                  }
+                });
+              });
             }
           }
         });
@@ -135,16 +162,16 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
         const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const center = box.getCenter(new THREE.Vector3());
-        
+
         // Reposition origin to center of base
         model.position.x += (model.position.x - center.x);
         model.position.y += (model.position.y - box.min.y) - 0.8; // Align bottom of model to shadow plane
         model.position.z += (model.position.z - center.z);
-        
+
         // Auto-scale model if too big/small
         const maxDim = Math.max(size.x, size.y, size.z);
         if (maxDim > 0) {
-          const scaleFactor = isBackground ? 1.4 : 1.8; // Slightly smaller when background to look neat
+          const scaleFactor = isBackground ? 1.1 : 1.0; // Zoomed out to 80% to fit nicely
           model.scale.setScalar(scaleFactor);
         }
 
@@ -185,67 +212,28 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      
+
       if (model) {
         if (isBackground) {
-          // Calculate scroll progress (0.0 to 1.0)
-          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-          const scrollFraction = maxScroll > 0 ? Math.min(Math.max(currentScrollY / maxScroll, 0), 1) : 0;
-          
           let targetX = 1.1;
           let targetY = -0.4;
           let targetZ = -0.3;
-          const targetRotY = scrollFraction * Math.PI * 4; // 2 complete spins over the page height
-          const targetRotX = mouseY * 0.15;
 
-          if (window.innerWidth >= 1024) {
-            // Desktop scroll sections interpolation:
-            // Section 1: Hero (scrollFraction 0 to 0.25)
-            //   At 0: x = 1.1, y = -0.4, z = -0.3
-            //   Moves to: x = -1.0, y = -0.4, z = -0.3 (at 0.25)
-            // Section 2: Work (scrollFraction 0.25 to 0.5)
-            //   Moves to: x = 0.0, y = -0.4, z = -1.0 (deeper background) (at 0.5)
-            // Section 3: About (scrollFraction 0.5 to 0.75)
-            //   Moves to: x = 1.1, y = -0.4, z = -0.3 (at 0.75)
-            // Section 4: Contact (scrollFraction 0.75 to 1.0)
-            //   Stays at: x = 1.1, y = -0.4, z = -0.3 (at 1.0)
-            
-            if (scrollFraction < 0.25) {
-              const t = scrollFraction / 0.25;
-              targetX = 1.1 - t * 2.1; // moves 1.1 to -1.0
-              targetY = -0.4;
-              targetZ = -0.3;
-            } else if (scrollFraction < 0.5) {
-              const t = (scrollFraction - 0.25) / 0.25;
-              targetX = -1.0 + t * 1.0; // moves -1.0 to 0.0
-              targetY = -0.4;
-              targetZ = -0.3 - t * 0.7; // moves deeper (-0.3 to -1.0)
-            } else if (scrollFraction < 0.75) {
-              const t = (scrollFraction - 0.5) / 0.25;
-              targetX = 0.0 + t * 1.1; // moves 0.0 to 1.1
-              targetY = -0.4;
-              targetZ = -1.0 + t * 0.7; // moves shallower (-1.0 to -0.3)
-            } else {
-              targetX = 1.1;
-              targetY = -0.4;
-              targetZ = -0.3;
-            }
-          } else {
-            // Mobile viewport scroll settings:
-            // Keep it centered on X (x = 0), and scale/depth changes slightly on scroll
+          if (window.innerWidth < 1024) {
             targetX = 0;
             targetY = -0.6;
-            targetZ = -scrollFraction * 0.8; // Recedes slightly deeper as they scroll down
+            targetZ = 0;
           }
 
           // Smooth lerp interpolation for coordinates (damping)
           model.position.x += (targetX - model.position.x) * 0.05;
           model.position.y += (targetY - model.position.y) * 0.05;
           model.position.z += (targetZ - model.position.z) * 0.05;
-          
-          // Smooth rotation (spinning + mouse parallax coordinates)
-          model.rotation.y += (targetRotY + mouseX * 0.22 - model.rotation.y) * 0.05;
-          model.rotation.x += (targetRotX - model.rotation.x) * 0.05;
+
+          // Mouse parallax coordinates only (no automatic rotation)
+          const targetRotY = mouseX * 0.22;
+          model.rotation.y += (targetRotY - model.rotation.y) * 0.05;
+          model.rotation.x += (mouseY * 0.15 - model.rotation.x) * 0.05;
 
           // Shadow plane matches model coordinates
           shadowPlane.position.x = model.position.x;
@@ -296,7 +284,7 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
           <p className="text-xs text-slate-500 font-mono">Loading 3D Visualizer...</p>
         </div>
       )}
-      
+
       {error && (
         <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-20 bg-slate-950/10 backdrop-blur-md rounded-3xl border border-dashed border-red-500/20">
           <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-3">
@@ -313,7 +301,7 @@ export default function ThreeCanvas({ modelPath = "/model.glb", isBackground = f
           </div>
         </div>
       )}
-      
+
       <div ref={containerRef} className="w-full h-full" />
     </div>
   );
